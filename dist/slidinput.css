@@ -1,0 +1,34 @@
+/**
+ * @author Alex Chebotarsky
+ */
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  margin: 0;
+}
+.slidinput-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.slidinput-wrapper input {
+}
+.slidinput-placeholder {
+  --sliding: 90%;
+  --scaling: 0.5;
+  position: absolute;
+  transform-origin: 0% 0%;
+  transition: all 300ms ease;
+  transition-property: transform, color;
+}
+.slidinput-wrapper.filled .slidinput-placeholder,
+.slidinput-wrapper.focused .slidinput-placeholder {
+  transform: scale(var(--scaling)) translateY(calc(var(--sliding) * -1));
+}
