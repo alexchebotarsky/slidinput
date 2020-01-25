@@ -11,10 +11,12 @@ body {
   font-family: sans-serif;
   border: 2px solid #a57e94;
   border-radius: 6px;
-  margin: 10px 20px;
+  margin: 20px;
   background-color: transparent;
   color: #a57e94;
-  padding: 10px 12px;
+  font-size: 36px;
+  padding: 15px;
+  height: 80px;
 }
 .myInput3-wrapper.focused .slidinput-placeholder {
   color: #ad5e57 !important;

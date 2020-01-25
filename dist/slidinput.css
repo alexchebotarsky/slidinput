@@ -4,12 +4,10 @@
 *,
 *::before,
 *::after {
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
-button,
 input,
-select,
 textarea {
   font-family: inherit;
   margin: 0;
@@ -19,9 +17,11 @@ textarea {
   display: inline-block;
 }
 .slidinput-wrapper input {
+  box-sizing: border-box!important;
 }
 .slidinput-placeholder {
-  --sliding: 90%;
+  --sliding-y: -90%;
+  --sliding-x: 0;
   --scaling: 0.5;
   position: absolute;
   transform-origin: 0% 0%;
@@ -30,5 +30,5 @@ textarea {
 }
 .slidinput-wrapper.filled .slidinput-placeholder,
 .slidinput-wrapper.focused .slidinput-placeholder {
-  transform: scale(var(--scaling)) translateY(calc(var(--sliding) * -1));
+  transform: scale(var(--scaling)) translate(var(--sliding-x), var(--sliding-y));
 }
