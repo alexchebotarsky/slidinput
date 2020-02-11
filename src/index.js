@@ -1,4 +1,4 @@
-'use strict';
+import './main.css';
 (function($) {
   const getClassesString = (classList, postfix = '') =>
     Array.from(classList)

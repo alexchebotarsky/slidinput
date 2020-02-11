@@ -1,0 +1,53 @@
+{
+  "name": "my-webpack-configuration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:types": "tsc --noEmit",
+    "watch": "webpack --mode=development --watch",
+    "watch:types": "tsc --noEmit --watch",
+    "start": "webpack-dev-server --mode=development --open",
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "build:types": "tsc --noEmit && webpack --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goodleby/my-webpack-configuration.git"
+  },
+  "author": "Alex Chebotarsky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/goodleby/my-webpack-configuration/issues"
+  },
+  "homepage": "https://github.com/goodleby/my-webpack-configuration#readme",
+  "peerDependencies": {
+    "jquery": "3.x"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@types/jest": "^25.1.2",
+    "babel-jest": "^25.1.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.4.2",
+    "cssnano": "^4.1.10",
+    "file-loader": "^5.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^25.1.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "sass": "^1.25.0",
+    "sass-loader": "^8.0.2",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.2"
+  }
+}
