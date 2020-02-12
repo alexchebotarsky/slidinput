@@ -8,6 +8,10 @@ import './main.css';
     values.reduce((acc, item) => acc + Number(item.slice(0, -2)), 0);
   const compareStyle = (style, target1, target2) =>
     $(target1).css(style) !== $(target2).css(style) ? $(target1).css(style) : '';
+  const isFilled = input =>
+    !!$(input)
+      .val()
+      .trim();
   $.fn.slidinput = function(options) {
     const defs = {
       scaling: 0.5,
@@ -16,6 +20,7 @@ import './main.css';
     };
     options = $.extend(defs, options);
     return this.each(function() {
+      let oh = $(this).outerHeight();
       $(this).wrap(
         $(document.createElement('label')).addClass(
           getClassesString(['slidinput', ...this.classList], '-wrapper')
@@ -32,21 +37,32 @@ import './main.css';
         marginRight: compareStyle('marginRight', this, $wrapper),
         marginBottom: compareStyle('marginBottom', this, $wrapper)
       });
+      const addFilled = () => {
+        $wrapper.addClass('filled');
+        $(this).addClass('filled');
+      };
+      const removeFilled = () => {
+        $wrapper.removeClass('filled');
+        $(this).removeClass('filled');
+      };
+      const addFocus = () => {
+        $wrapper.addClass('focused');
+        $(this).addClass('focused');
+      };
+      const removeFocus = () => {
+        $wrapper.removeClass('focused');
+        $(this).removeClass('focused');
+      };
       $(this)
         .removeAttr('placeholder')
         .css({
           margin: 0,
-          height: $(this).outerHeight()
+          height: oh
         })
-        .on('focus', () => $wrapper.addClass('focused'))
-        .on('blur', () => $wrapper.removeClass('focused'))
-        .on('input', () => {
-          $(this)
-            .val()
-            .trim()
-            ? $wrapper.addClass('filled')
-            : $wrapper.removeClass('filled');
-        });
+        .on('focus', () => addFocus() && (isFilled(this) ? addFilled() : removeFilled()))
+        .on('blur', () => removeFocus() && (isFilled(this) ? addFilled() : removeFilled()))
+        .on('input', () => (isFilled(this) ? addFilled() : removeFilled()));
+      $(window).one('load', () => (isFilled(this) ? addFilled() : removeFilled()));
       $(placeholder).css({
         color: compareStyle('color', this, placeholder),
         fontSize: compareStyle('fontSize', this, placeholder),
@@ -56,7 +72,6 @@ import './main.css';
         top: 0,
         left: 0
       });
-      let oh = $wrapper.outerHeight();
       let ih = $(placeholder).height();
       let bt = pxToNum($(this).css('borderTopWidth'));
       let bb = pxToNum($(this).css('borderBottomWidth'));
