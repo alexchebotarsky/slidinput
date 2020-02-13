@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/goodleby/my-webpack-configuration/issues"
   },
-  "homepage": "https://github.com/goodleby/my-webpack-configuration#readme",
+  "homepage": "https://goodleby.github.io/slidinput/",
   "peerDependencies": {
     "jquery": "3.x"
   },
