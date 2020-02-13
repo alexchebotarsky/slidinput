@@ -14,8 +14,8 @@ import './main.css';
       .trim();
   $.fn.slidinput = function(options) {
     const defs = {
-      scaling: 0.5,
-      mode: false,
+      scaling: 0.7,
+      mode: 'centered',
       placeholderPadding: 0
     };
     options = $.extend(defs, options);
@@ -37,32 +37,26 @@ import './main.css';
         marginRight: compareStyle('marginRight', this, $wrapper),
         marginBottom: compareStyle('marginBottom', this, $wrapper)
       });
-      const addFilled = () => {
-        $wrapper.addClass('filled');
-        $(this).addClass('filled');
-      };
-      const removeFilled = () => {
-        $wrapper.removeClass('filled');
-        $(this).removeClass('filled');
-      };
-      const addFocus = () => {
-        $wrapper.addClass('focused');
-        $(this).addClass('focused');
-      };
-      const removeFocus = () => {
-        $wrapper.removeClass('focused');
-        $(this).removeClass('focused');
-      };
       $(this)
         .removeAttr('placeholder')
         .css({
           margin: 0,
           height: oh
         })
-        .on('focus', () => addFocus() && (isFilled(this) ? addFilled() : removeFilled()))
-        .on('blur', () => removeFocus() && (isFilled(this) ? addFilled() : removeFilled()))
-        .on('input', () => (isFilled(this) ? addFilled() : removeFilled()));
-      $(window).one('load', () => (isFilled(this) ? addFilled() : removeFilled()));
+        .on('focus', () => {
+          $wrapper.addClass('focused');
+          isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+        })
+        .on('blur', () => {
+          $wrapper.removeClass('focused');
+          isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+        })
+        .on('input', () => {
+          isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+        });
+      $(window).one('load', () => {
+        isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+      });
       $(placeholder).css({
         color: compareStyle('color', this, placeholder),
         fontSize: compareStyle('fontSize', this, placeholder),
@@ -72,10 +66,8 @@ import './main.css';
         top: 0,
         left: 0
       });
-      let ih = $(placeholder).height();
-      let bt = pxToNum($(this).css('borderTopWidth'));
-      let bb = pxToNum($(this).css('borderBottomWidth'));
-      let placeholderTop = (oh - ih) / 2;
+      let ph = $(placeholder).height();
+      let placeholderTop = (oh - ph) / 2;
       let placeholderLeft = pxToNum(
         $(this).css('paddingLeft'),
         $(this).css('borderLeftWidth')
@@ -86,21 +78,41 @@ import './main.css';
       });
       let {scaling, mode, placeholderPadding} = options;
       placeholder.style.setProperty('--scaling', scaling);
+      if ($(this).css('text-align') === 'center') {
+        let pw = $(placeholder).width();
+        $(placeholder).css('left', placeholderLeft + ($(this).width() - pw) / 2 + 'px');
+        placeholder.style.setProperty(
+          '--sliding-x',
+          (pw - pw * scaling) / (scaling * 2) + 'px'
+        );
+      }
       switch (mode) {
-        case 'above':
-          let newSlidingY = ((placeholderTop + placeholderPadding) / scaling + ih) * -1;
-          placeholder.style.setProperty('--sliding-y', newSlidingY + 'px');
-          placeholder.style.setProperty('--sliding-x', -placeholderLeft / scaling + 'px');
-          break;
         case 'centered':
-          let newPaddingBottom = (oh - bt + bb - ih * (1 + scaling) - placeholderPadding) / 2;
-          let newPaddingTop = oh - bt + bb - ih - newPaddingBottom;
+          $wrapper.addClass('mode-centered');
+          let bt = pxToNum($(this).css('borderTopWidth'));
+          let bb = pxToNum($(this).css('borderBottomWidth'));
+          let newPaddingBottom = (oh - bt + bb - ph * (1 + scaling) - placeholderPadding) / 2;
+          let newPaddingTop = oh - bt + bb - ph - newPaddingBottom;
           $(this).css({
             paddingTop: newPaddingTop,
             paddingBottom: newPaddingBottom
           });
           let newSliding = (newPaddingBottom + bt - placeholderTop) / scaling;
           placeholder.style.setProperty('--sliding-y', newSliding + 'px');
+          break;
+        case 'above':
+          $wrapper.addClass('mode-above');
+          let newSlidingY = ((placeholderTop + placeholderPadding) / scaling + ph) * -1;
+          placeholder.style.setProperty('--sliding-y', newSlidingY + 'px');
+          if ($(this).css('text-align') !== 'center') {
+            placeholder.style.setProperty('--sliding-x', -placeholderLeft / scaling + 'px');
+          }
+          break;
+        case 'regular':
+          $wrapper.addClass('mode-regular');
+          placeholder.style.setProperty('--scaling', 1);
+          placeholder.style.setProperty('--sliding-y', 0);
+          placeholder.style.setProperty('--sliding-x', 0);
           break;
       }
     });

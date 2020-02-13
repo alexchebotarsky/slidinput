@@ -19,13 +19,15 @@ textarea {
 .slidinput-placeholder {
   --sliding-y: -90%;
   --sliding-x: 0;
-  --scaling: 0.5; /* 0.5 is default value at JS */
+  --scaling: 0.7; /* 0.7 is default value at JS */
   position: absolute;
   transform-origin: 0% 0%;
-  transition: all 300ms ease;
-  transition-property: transform, color;
+  transition: transform 300ms ease, color 300ms ease, opacity 100ms ease;
 }
-.slidinput-wrapper.filled .slidinput-placeholder,
-.slidinput-wrapper.focused .slidinput-placeholder {
+.slidinput-wrapper.focused .slidinput-placeholder,
+.slidinput-wrapper.filled .slidinput-placeholder {
   transform: scale(var(--scaling)) translate(var(--sliding-x), var(--sliding-y));
+}
+.slidinput-wrapper.mode-regular.filled .slidinput-placeholder {
+  opacity: 0;
 }

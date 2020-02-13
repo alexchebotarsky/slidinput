@@ -18,9 +18,23 @@ body {
   padding: 15px;
   height: 80px;
 }
-.myInput3-wrapper.focused .slidinput-placeholder {
+
+.myInput4 {
+  text-align: center;
+}
+
+.container {
+  height: 100px;
+  margin: 20px;
+}
+.myInput5 {
+  height: 100%;
+  margin: 0;
+}
+
+.myInput6-wrapper.focused .slidinput-placeholder {
   color: #ad5e57 !important;
 }
-.myInput3-wrapper.filled .slidinput-placeholder {
+.myInput6-wrapper.filled .slidinput-placeholder {
   color: #7ea58b !important;
 }

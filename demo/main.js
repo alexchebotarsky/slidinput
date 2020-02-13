@@ -1,5 +1,5 @@
 $('.myInput1').slidinput({
-  mode: 'centered'
+  mode: 'centered' // Actually, it's default mode
 });
 
 $('.myInput2').slidinput({
@@ -8,6 +8,13 @@ $('.myInput2').slidinput({
 });
 
 $('.myInput3').slidinput({
-  mode: 'centered',
-  placeholderPadding: 8
+  mode: 'regular'
 });
+
+$('.myInput4').slidinput();
+
+$('.myInput5').slidinput();
+
+$('.myInput6').slidinput();
+
+$('.myInput7').slidinput();

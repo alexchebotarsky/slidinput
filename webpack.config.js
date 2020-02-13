@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const banner = `
 /**!
  * @link https://github.com/goodleby/slidinput
- * @version 0.0.3
+ * @version 0.0.4
  */
 `;
 
