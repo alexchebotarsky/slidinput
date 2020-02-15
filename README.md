@@ -1,18 +1,26 @@
 # slidinput
 
-jQuery library for customizing and animating input's placeholder, label
+Lightweight jQuery plugin for creating custom animated **placeholders** using **native** `placeholder` attribute.
 
-## See [demo](https://goodleby.github.io/slidinput/demo/) for visual examples
+See 💥[demo](https://goodleby.github.io/slidinput/demo/)💥 for visual examples.
+
+Make **any** input **user-friendly** and enchance any form using _slidinput_ plugin.
+
+This feature is also known as **float label pattern** or **Material design/iOS styled** inputs.
+
+Simply activate on input field with placeholder and it will **slide** it's text on **focus** and **typing**.
+
+The plugin is using **CSS transitions** to do **flow up effect** and make label **"fly"** on **click**.
 
 ## How to install?
 
-- Add css file to `head`
+- Add `.css` file to `head` tag
 
   ```html
   <link href="yourPath/jquery.slidinput.min.css" rel="stylesheet" />
   ```
 
-- Add js file somewhere after jQuery file
+- Add `.js` file somewhere after your jQuery file
 
   ```html
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -46,7 +54,7 @@ $('.myInput').slidinput({
 });
 ```
 
-These are default options:
+These are **default** options:
 
 ```javascript
 const defs = {
@@ -61,4 +69,4 @@ const defs = {
 };
 ```
 
-_**Tip:** You can also customize in CSS using classes given by the library._
+_**Tip:** You can also customize it using CSS classes given by the plugin._
