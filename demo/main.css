@@ -19,7 +19,7 @@ body {
   height: 80px;
 }
 
-.myInput4 {
+.myInputTextAlignCenter {
   text-align: center;
 }
 
@@ -27,14 +27,15 @@ body {
   height: 100px;
   margin: 20px;
 }
-.myInput5 {
+.myInputCssSized {
   height: 100%;
+  width: 700px;
   margin: 0;
 }
 
-.myInput6-wrapper.focused .slidinput-placeholder {
+.myInputCssColored-wrapper.focused .slidinput-placeholder {
   color: #ad5e57 !important;
 }
-.myInput6-wrapper.filled .slidinput-placeholder {
+.myInputCssColored-wrapper.filled .slidinput-placeholder {
   color: #7ea58b !important;
 }

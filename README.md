@@ -20,7 +20,7 @@ The plugin is using **CSS transitions** to do **flow up effect** and make label 
   <link href="yourPath/jquery.slidinput.min.css" rel="stylesheet" />
   ```
 
-- Add `.js` file somewhere after your jQuery file
+- Add `.js` file somewhere after **your jQuery** file
 
   ```html
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -42,15 +42,18 @@ The plugin is using **CSS transitions** to do **flow up effect** and make label 
 $('.myInput').slidinput();
 ```
 
-- **Success!** Your input is not looking boring anymore :)
+- **Success!** Your input does not look boring anymore :)
 
 ## How to customize?
 
-You can pass an object with options to the function:
+You can pass an object with options to the function, like that:
 
 ```javascript
 $('.myInput').slidinput({
-  mode: 'above'
+  mode: 'middle',
+  offsetX: -25,
+  offsetY: 10,
+  scaling: 0.4
 });
 ```
 
@@ -58,15 +61,24 @@ These are **default** options:
 
 ```javascript
 const defs = {
-  // Available: 'centered', 'above', 'regular'
+  // Available: 'centered', 'above', 'middle', 'regular'
   mode: 'centered',
 
-  // Distance between input's text and sliding placeholder in px
-  placeholderPadding: 0,
+  // Placeholder `translateY` on slide, from it's mode default position
+  offsetY: 0,
+
+  // Placeholder `translateX` on slide, from it's mode default position
+  offsetX: 0,
 
   // CSS scale parameter on slide
   scaling: 0.7
 };
 ```
 
-_**Tip:** You can also customize it using CSS classes given by the plugin._
+## Tips
+
+- You can **customize** your input using **CSS classes** given by the plugin, for instance: `.filled`, `.focused`, `.mode-centered`, etc.
+
+- You should add `height` and `width` right to the **input** (not plugin's wrapper). The plugin will do the **magic** for you! :)
+
+- If you add `text-align: center` to your input, the plugin will **detect** it and make placeholder **centered**.

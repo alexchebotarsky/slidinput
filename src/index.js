@@ -1,4 +1,4 @@
-import './main.css';
+import './main.scss';
 (function($) {
   const getClassesString = (classList, postfix = '') =>
     Array.from(classList)
@@ -16,11 +16,13 @@ import './main.css';
     const defs = {
       scaling: 0.7,
       mode: 'centered',
-      placeholderPadding: 0
+      offsetY: 0,
+      offsetX: 0
     };
     options = $.extend(defs, options);
     return this.each(function() {
       let oh = $(this).outerHeight();
+      let ow = $(this).outerWidth();
       $(this).wrap(
         $(document.createElement('label')).addClass(
           getClassesString(['slidinput', ...this.classList], '-wrapper')
@@ -41,7 +43,8 @@ import './main.css';
         .removeAttr('placeholder')
         .css({
           margin: 0,
-          height: oh
+          height: oh,
+          width: ow
         })
         .on('focus', () => {
           $wrapper.addClass('focused');
@@ -76,14 +79,15 @@ import './main.css';
         top: placeholderTop,
         left: placeholderLeft
       });
-      let {scaling, mode, placeholderPadding} = options;
+      let {scaling, mode, offsetY, offsetX} = options;
       placeholder.style.setProperty('--scaling', scaling);
       if ($(this).css('text-align') === 'center') {
+        $wrapper.addClass('text-align-center');
         let pw = $(placeholder).width();
         $(placeholder).css('left', placeholderLeft + ($(this).width() - pw) / 2 + 'px');
         placeholder.style.setProperty(
           '--sliding-x',
-          (pw - pw * scaling) / (scaling * 2) + 'px'
+          (pw - pw * scaling) / (scaling * 2) + offsetX + 'px'
         );
       }
       switch (mode) {
@@ -91,7 +95,7 @@ import './main.css';
           $wrapper.addClass('mode-centered');
           let bt = pxToNum($(this).css('borderTopWidth'));
           let bb = pxToNum($(this).css('borderBottomWidth'));
-          let newPaddingBottom = (oh - bt + bb - ph * (1 + scaling) - placeholderPadding) / 2;
+          let newPaddingBottom = (oh - bt + bb - ph * (1 + scaling) + offsetY) / 2;
           let newPaddingTop = oh - bt + bb - ph - newPaddingBottom;
           $(this).css({
             paddingTop: newPaddingTop,
@@ -99,13 +103,19 @@ import './main.css';
           });
           let newSliding = (newPaddingBottom + bt - placeholderTop) / scaling;
           placeholder.style.setProperty('--sliding-y', newSliding + 'px');
+          if ($(this).css('text-align') !== 'center') {
+            placeholder.style.setProperty('--sliding-x', offsetX + 'px');
+          }
           break;
         case 'above':
           $wrapper.addClass('mode-above');
-          let newSlidingY = ((placeholderTop + placeholderPadding) / scaling + ph) * -1;
+          let newSlidingY = ((placeholderTop - offsetY) / scaling + ph) * -1;
           placeholder.style.setProperty('--sliding-y', newSlidingY + 'px');
           if ($(this).css('text-align') !== 'center') {
-            placeholder.style.setProperty('--sliding-x', -placeholderLeft / scaling + 'px');
+            placeholder.style.setProperty(
+              '--sliding-x',
+              -placeholderLeft / scaling + offsetX + 'px'
+            );
           }
           break;
         case 'regular':
@@ -113,6 +123,13 @@ import './main.css';
           placeholder.style.setProperty('--scaling', 1);
           placeholder.style.setProperty('--sliding-y', 0);
           placeholder.style.setProperty('--sliding-x', 0);
+          break;
+        case 'middle':
+          $wrapper.addClass('mode-middle');
+          placeholder.style.setProperty('--sliding-y', -oh * 0.9 * scaling + offsetY + 'px');
+          if ($(this).css('text-align') !== 'center') {
+            placeholder.style.setProperty('--sliding-x', offsetX + 'px');
+          }
           break;
       }
     });

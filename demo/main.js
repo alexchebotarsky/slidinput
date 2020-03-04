@@ -1,20 +1,32 @@
-$('.myInput1').slidinput({
+$('.myInputCentered').slidinput({
   mode: 'centered' // Actually, it's default mode
 });
 
-$('.myInput2').slidinput({
+$('.myInputAbove').slidinput({
   mode: 'above',
-  placeholderPadding: 2
+  offsetY: -2
 });
 
-$('.myInput3').slidinput({
+$('.myInputNone').slidinput({
+  mode: 'middle',
+  scaling: 0.5
+});
+
+$('.myInputRegular').slidinput({
   mode: 'regular'
 });
 
-$('.myInput4').slidinput();
+$('.myInputCustomOffset').slidinput({
+  mode: 'middle',
+  offsetX: -25,
+  offsetY: -10,
+  scaling: 0.4
+});
 
-$('.myInput5').slidinput();
+$('.myInputTextAlignCenter').slidinput();
 
-$('.myInput6').slidinput();
+$('.myInputCssSized').slidinput();
 
-$('.myInput7').slidinput();
+$('.myInputCssColored').slidinput();
+
+$('.myInputDisabled').slidinput();
