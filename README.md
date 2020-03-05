@@ -75,6 +75,14 @@ const defs = {
 };
 ```
 
+## How to destroy?
+
+It is as simple as to init, just pass string `'destory'` to the function as follows:
+
+```javascript
+$('.myInput').slidinput('destroy');
+```
+
 ## Tips
 
 - You can **customize** your input using **CSS classes** given by the plugin, for instance: `.filled`, `.focused`, `.mode-centered`, etc.

@@ -19,8 +19,26 @@ import './main.scss';
       offsetY: 0,
       offsetX: 0
     };
-    options = $.extend(defs, options);
+    if (typeof options !== 'string') options = $.extend(defs, options);
     return this.each(function() {
+      if (typeof options === 'string') {
+        switch (options) {
+          case 'destroy':
+            if ($(this).hasClass('slidinput-inited')) {
+              let $placeholder = $(this)
+                .parent()
+                .children('.slidinput-placeholder');
+              $(this)
+                .removeClass('slidinput-inited')
+                .removeAttr('style')
+                .unwrap()
+                .attr('placeholder', $placeholder.text());
+              $placeholder.remove();
+            }
+            break;
+        }
+        return;
+      } else if ($(this).hasClass('slidinput-inited')) return;
       let oh = $(this).outerHeight();
       let ow = $(this).outerWidth();
       $(this).wrap(
@@ -39,7 +57,9 @@ import './main.scss';
         marginRight: compareStyle('marginRight', this, $wrapper),
         marginBottom: compareStyle('marginBottom', this, $wrapper)
       });
+      isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
       $(this)
+        .addClass('slidinput-inited')
         .removeAttr('placeholder')
         .css({
           margin: 0,

@@ -1,7 +1,7 @@
 
 /**!
  * @link https://github.com/goodleby/slidinput
- * @version 0.0.5
+ * @version 0.0.6
  */
 
 *,*::before,*::after{box-sizing:border-box}input,textarea{font-family:inherit;margin:0}.slidinput-wrapper{position:relative;display:inline-block}.slidinput-wrapper input{box-sizing:border-box !important}.slidinput-placeholder{--sliding-y: -90%;--sliding-x: 0;--scaling: 0.7;position:absolute;-webkit-transform-origin:0% 0%;transform-origin:0% 0%;-webkit-transition:color 300ms ease,opacity 100ms ease,-webkit-transform 300ms ease;transition:color 300ms ease,opacity 100ms ease,-webkit-transform 300ms ease;transition:transform 300ms ease,color 300ms ease,opacity 100ms ease;transition:transform 300ms ease,color 300ms ease,opacity 100ms ease,-webkit-transform 300ms ease}.slidinput-wrapper.focused .slidinput-placeholder,.slidinput-wrapper.filled .slidinput-placeholder{-webkit-transform:scale(var(--scaling)) translate(var(--sliding-x), var(--sliding-y));transform:scale(var(--scaling)) translate(var(--sliding-x), var(--sliding-y))}.slidinput-wrapper.mode-regular.filled .slidinput-placeholder{opacity:0}

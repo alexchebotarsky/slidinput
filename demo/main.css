@@ -19,11 +19,31 @@ body {
   height: 80px;
 }
 
+.container-row {
+  display: flex;
+  align-items: center;
+}
+.toggleMeBtn {
+  width: 120px;
+  height: 80px;
+  font-size: 20px;
+  border: none;
+  background-color: #a57e94;
+  color: #fff;
+  opacity: 1;
+  border-radius: 6px;
+  transition: opacity 300ms ease;
+  cursor: pointer;
+}
+.toggleMeBtn:active {
+  opacity: 0.6;
+}
+
 .myInputTextAlignCenter {
   text-align: center;
 }
 
-.container {
+.container-sized {
   height: 100px;
   margin: 20px;
 }
