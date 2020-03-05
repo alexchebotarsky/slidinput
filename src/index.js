@@ -19,26 +19,30 @@ import './main.scss';
       offsetY: 0,
       offsetX: 0
     };
-    if (typeof options !== 'string') options = $.extend(defs, options);
+    $(window).one('load', () => {
+      $('*[data-slidinput]').slidinput();
+    });
     return this.each(function() {
-      if (typeof options === 'string') {
-        switch (options) {
-          case 'destroy':
-            if ($(this).hasClass('slidinput-inited')) {
-              let $placeholder = $(this)
-                .parent()
-                .children('.slidinput-placeholder');
-              $(this)
-                .removeClass('slidinput-inited')
-                .removeAttr('style')
-                .unwrap()
-                .attr('placeholder', $placeholder.text());
-              $placeholder.remove();
-            }
-            break;
+      if (options === 'destroy') {
+        if ($(this).hasClass('slidinput-inited')) {
+          let $placeholder = $(this)
+            .parent()
+            .children('.slidinput-placeholder');
+          $(this)
+            .removeClass('slidinput-inited')
+            .removeAttr('style')
+            .unwrap()
+            .attr('placeholder', $placeholder.text());
+          $placeholder.remove();
         }
         return;
       } else if ($(this).hasClass('slidinput-inited')) return;
+      let dataOptions = {};
+      for (let key in defs) {
+        if ($(this).attr('data-' + key)) dataOptions[key] = $(this).attr('data-' + key);
+        if (!isNaN(dataOptions[key])) dataOptions[key] = Number(dataOptions[key]);
+      }
+      options = $.extend(defs, dataOptions, options);
       let oh = $(this).outerHeight();
       let ow = $(this).outerWidth();
       $(this).wrap(

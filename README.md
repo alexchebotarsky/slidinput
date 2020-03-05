@@ -36,17 +36,23 @@ The plugin is using **CSS transitions** to do **flow up effect** and make label 
 <input type="text" placeholder="Your name" class="myInput" />
 ```
 
-- Secondly, we need to **init it** using javascript
+- Secondly, we can **init it** using **javascript**:
 
 ```javascript
 $('.myInput').slidinput();
+```
+
+- **Or** we can init it by adding `data-slidinput` attribute at **HTML**:
+
+```html
+<input type="text" placeholder="Your name" class="myInput" data-slidinput />
 ```
 
 - **Success!** Your input does not look boring anymore :)
 
 ## How to customize?
 
-You can pass an object with options to the function, like that:
+- You can pass an object with options to the function, like that:
 
 ```javascript
 $('.myInput').slidinput({
@@ -56,6 +62,18 @@ $('.myInput').slidinput({
   scaling: 0.4
 });
 ```
+
+- Or you can add data attributes at HTML. Simply add `data-` **before** the **option** you want to set.
+
+```html
+<input type="text" placeholder="Your name" class="myInput" data-slidinput data-scaling="0.5" data-mode="above" />
+```
+
+**_Notes:_**
+
+- Settings set at javascript will **override** options set by data attributes.
+
+- In example above `data-slidinput` is used, but if you **wish** you can set options using data attributes, and **init** the input using javascript.
 
 These are **default** options:
 

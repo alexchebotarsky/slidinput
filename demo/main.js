@@ -1,9 +1,6 @@
 $('.myInputCentered').slidinput({
   mode: 'centered' // Actually, it's default mode
 });
-$('.myInputCentered').slidinput({
-  mode: 'centered' // Actually, it's default mode
-});
 
 $('.myInputAbove').slidinput({
   mode: 'above',
@@ -27,7 +24,6 @@ $('.myInputCustomOffset').slidinput({
 });
 
 $('.myInputToggleMe').slidinput();
-
 $('.toggleMeBtn').on('click', function() {
   inited = $('.myInputToggleMe').hasClass('slidinput-inited');
   if (inited) {
