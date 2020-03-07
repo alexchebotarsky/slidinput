@@ -12,16 +12,17 @@ import './main.scss';
     !!$(input)
       .val()
       .trim();
+  $(window).one('load', () => {
+    $('*[data-slidinput]').slidinput();
+  });
   $.fn.slidinput = function(options) {
     const defs = {
       scaling: 0.7,
       mode: 'centered',
       offsetY: 0,
-      offsetX: 0
+      offsetX: 0,
+      focusAnimation: true
     };
-    $(window).one('load', () => {
-      $('*[data-slidinput]').slidinput();
-    });
     return this.each(function() {
       if (options === 'destroy') {
         if ($(this).hasClass('slidinput-inited')) {
@@ -41,6 +42,14 @@ import './main.scss';
       for (let key in defs) {
         if ($(this).attr('data-' + key)) dataOptions[key] = $(this).attr('data-' + key);
         if (!isNaN(dataOptions[key])) dataOptions[key] = Number(dataOptions[key]);
+        switch (dataOptions[key]) {
+          case 'true':
+            dataOptions[key] = true;
+            break;
+          case 'false':
+            dataOptions[key] = false;
+            break;
+        }
       }
       options = $.extend(defs, dataOptions, options);
       let oh = $(this).outerHeight();
@@ -50,18 +59,22 @@ import './main.scss';
           getClassesString(['slidinput', ...this.classList], '-wrapper')
         )
       );
-      const $wrapper = $(this).parent();
+      const wrapper = $(this)
+        .parent()
+        .get()[0];
       const placeholder = $(document.createElement('span'))
         .addClass('slidinput-placeholder')
         .text($(this).attr('placeholder'))
         .get()[0];
-      $wrapper.append(placeholder).css({
-        marginLeft: compareStyle('marginLeft', this, $wrapper),
-        marginTop: compareStyle('marginTop', this, $wrapper),
-        marginRight: compareStyle('marginRight', this, $wrapper),
-        marginBottom: compareStyle('marginBottom', this, $wrapper)
-      });
-      isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+      $(wrapper)
+        .append(placeholder)
+        .css({
+          marginLeft: compareStyle('marginLeft', this, wrapper),
+          marginTop: compareStyle('marginTop', this, wrapper),
+          marginRight: compareStyle('marginRight', this, wrapper),
+          marginBottom: compareStyle('marginBottom', this, wrapper)
+        });
+      isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
       $(this)
         .addClass('slidinput-inited')
         .removeAttr('placeholder')
@@ -71,18 +84,18 @@ import './main.scss';
           width: ow
         })
         .on('focus', () => {
-          $wrapper.addClass('focused');
-          isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+          $(wrapper).addClass('focused');
+          isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
         })
         .on('blur', () => {
-          $wrapper.removeClass('focused');
-          isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+          $(wrapper).removeClass('focused');
+          isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
         })
         .on('input', () => {
-          isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+          isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
         });
       $(window).one('load', () => {
-        isFilled(this) ? $wrapper.addClass('filled') : $wrapper.removeClass('filled');
+        isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
       });
       $(placeholder).css({
         color: compareStyle('color', this, placeholder),
@@ -103,10 +116,10 @@ import './main.scss';
         top: placeholderTop,
         left: placeholderLeft
       });
-      let {scaling, mode, offsetY, offsetX} = options;
+      let {scaling, mode, offsetY, offsetX, focusAnimation} = options;
       placeholder.style.setProperty('--scaling', scaling);
       if ($(this).css('text-align') === 'center') {
-        $wrapper.addClass('text-align-center');
+        $(wrapper).addClass('text-align-center');
         let pw = $(placeholder).width();
         $(placeholder).css('left', placeholderLeft + ($(this).width() - pw) / 2 + 'px');
         placeholder.style.setProperty(
@@ -114,9 +127,10 @@ import './main.scss';
           (pw - pw * scaling) / (scaling * 2) + offsetX + 'px'
         );
       }
+      if (focusAnimation) $(wrapper).addClass('focus-animation');
       switch (mode) {
         case 'centered':
-          $wrapper.addClass('mode-centered');
+          $(wrapper).addClass('mode-centered');
           let bt = pxToNum($(this).css('borderTopWidth'));
           let bb = pxToNum($(this).css('borderBottomWidth'));
           let newPaddingBottom = (oh - bt + bb - ph * (1 + scaling) + offsetY) / 2;
@@ -132,7 +146,7 @@ import './main.scss';
           }
           break;
         case 'above':
-          $wrapper.addClass('mode-above');
+          $(wrapper).addClass('mode-above');
           let newSlidingY = ((placeholderTop - offsetY) / scaling + ph) * -1;
           placeholder.style.setProperty('--sliding-y', newSlidingY + 'px');
           if ($(this).css('text-align') !== 'center') {
@@ -143,13 +157,16 @@ import './main.scss';
           }
           break;
         case 'regular':
-          $wrapper.addClass('mode-regular');
+          $(wrapper)
+            .addClass('mode-regular')
+            .removeClass('focus-animation');
           placeholder.style.setProperty('--scaling', 1);
-          placeholder.style.setProperty('--sliding-y', 0);
-          placeholder.style.setProperty('--sliding-x', 0);
+          placeholder.style.setProperty('--opacity', 0);
+          placeholder.style.setProperty('--sliding-y', offsetY + 'px');
+          placeholder.style.setProperty('--sliding-x', offsetX + 'px');
           break;
         case 'middle':
-          $wrapper.addClass('mode-middle');
+          $(wrapper).addClass('mode-middle');
           placeholder.style.setProperty('--sliding-y', -oh * 0.9 * scaling + offsetY + 'px');
           if ($(this).css('text-align') !== 'center') {
             placeholder.style.setProperty('--sliding-x', offsetX + 'px');

@@ -89,7 +89,10 @@ const defs = {
   offsetX: 0,
 
   // CSS scale parameter on slide
-  scaling: 0.7
+  scaling: 0.7,
+
+  // Whether to animate placeholder on focus
+  focusAnimation: true
 };
 ```
 

@@ -1,3 +1,13 @@
+$('.toggleMeBtn').on('click', function() {
+  if ($('.myInputToggleMe').hasClass('slidinput-inited')) {
+    $('.myInputToggleMe').slidinput('destroy');
+    $(this).text('Init it!');
+  } else {
+    $('.myInputToggleMe').slidinput();
+    $(this).text('Destroy it!');
+  }
+});
+
 $('.myInputCentered').slidinput({
   mode: 'centered' // Actually, it's default mode
 });
@@ -7,13 +17,18 @@ $('.myInputAbove').slidinput({
   offsetY: -2
 });
 
-$('.myInputNone').slidinput({
-  mode: 'middle',
-  scaling: 0.5
-});
-
 $('.myInputRegular').slidinput({
   mode: 'regular'
+});
+
+$('.myInputSlidingRegular').slidinput({
+  mode: 'regular',
+  offsetX: 70
+});
+
+$('.myInputMiddle').slidinput({
+  mode: 'middle',
+  scaling: 0.5
 });
 
 $('.myInputCustomOffset').slidinput({
@@ -23,22 +38,15 @@ $('.myInputCustomOffset').slidinput({
   scaling: 0.4
 });
 
-$('.myInputToggleMe').slidinput();
-$('.toggleMeBtn').on('click', function() {
-  inited = $('.myInputToggleMe').hasClass('slidinput-inited');
-  if (inited) {
-    $('.myInputToggleMe').slidinput('destroy');
-    $(this).text('Init it!');
-  } else {
-    $('.myInputToggleMe').slidinput();
-    $(this).text('Destroy it!');
-  }
+$('.myInputNoFocusAnimation').slidinput({
+  mode: 'above',
+  focusAnimation: false
 });
 
 $('.myInputTextAlignCenter').slidinput();
 
+$('.myInputDisabled').slidinput();
+
 $('.myInputCssSized').slidinput();
 
 $('.myInputCssColored').slidinput();
-
-$('.myInputDisabled').slidinput();
