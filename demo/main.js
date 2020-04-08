@@ -1,4 +1,4 @@
-$('.toggleMeBtn').on('click', function() {
+$('.toggleMeBtn').on('click', function () {
   if ($('.myInputToggleMe').hasClass('slidinput-inited')) {
     $('.myInputToggleMe').slidinput('destroy');
     $(this).text('Init it!');
@@ -9,38 +9,38 @@ $('.toggleMeBtn').on('click', function() {
 });
 
 $('.myInputCentered').slidinput({
-  mode: 'centered' // Actually, it's default mode
+  mode: 'centered', // Actually, it's default mode
 });
 
 $('.myInputAbove').slidinput({
   mode: 'above',
-  offsetY: -2
+  offsetY: -2,
 });
 
 $('.myInputRegular').slidinput({
-  mode: 'regular'
+  mode: 'regular',
 });
 
 $('.myInputSlidingRegular').slidinput({
   mode: 'regular',
-  offsetX: 70
+  offsetX: 70,
 });
 
 $('.myInputMiddle').slidinput({
   mode: 'middle',
-  scaling: 0.5
+  scaling: 0.5,
 });
 
 $('.myInputCustomOffset').slidinput({
   mode: 'middle',
   offsetX: -25,
   offsetY: -10,
-  scaling: 0.4
+  scaling: 0.4,
 });
 
 $('.myInputNoFocusAnimation').slidinput({
   mode: 'above',
-  focusAnimation: false
+  focusAnimation: false,
 });
 
 $('.myInputTextAlignCenter').slidinput();

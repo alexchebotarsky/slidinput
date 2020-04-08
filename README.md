@@ -59,7 +59,7 @@ $('.myInput').slidinput({
   mode: 'middle',
   offsetX: -25,
   offsetY: 10,
-  scaling: 0.4
+  scaling: 0.4,
 });
 ```
 
@@ -74,6 +74,8 @@ $('.myInput').slidinput({
 - Settings set at javascript will **override** options set by data attributes.
 
 - In example above `data-slidinput` is used, but if you **wish** you can set options using data attributes, and **init** the input using javascript.
+
+- Defaults stored at `$.fn.slidinput.defaults` so you can **change them**, if you wish.
 
 These are **default** options:
 
@@ -92,13 +94,24 @@ const defs = {
   scaling: 0.7,
 
   // Whether to animate placeholder on focus
-  focusAnimation: true
+  focusAnimation: true,
+
+  // Wheter to destroy and init input again on window resize event
+  resizeUpdate: true,
+
+  // Callback will be fired on init of each individual input.
+  // As parameter gets `controller` object that contains needed DOM elements and `options` object of the input.
+  onInit: false,
+
+  // Callback that will be fired on destroy of the input.
+  // As parameter gets `controller` object that contains needed DOM elements and `options` object of the input.
+  onDestroy: false,
 };
 ```
 
 ## How to destroy?
 
-It is as simple as to init, just pass string `'destory'` to the function as follows:
+It is as simple as to init, just pass string `'destroy'` to the function as follows:
 
 ```javascript
 $('.myInput').slidinput('destroy');

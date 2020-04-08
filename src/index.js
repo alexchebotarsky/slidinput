@@ -1,45 +1,57 @@
 import './main.scss';
-(function($) {
+(function ($) {
   const getClassesString = (classList, postfix = '') =>
     Array.from(classList)
-      .map(item => item + postfix)
+      .map((item) => item + postfix)
       .join(' ');
   const pxToNum = (...values) =>
-    values.reduce((acc, item) => acc + Number(item.slice(0, -2)), 0);
+    values.reduce((acc, item) => acc + Number(item.replace('px', '')), 0);
   const compareStyle = (style, target1, target2) =>
     $(target1).css(style) !== $(target2).css(style) ? $(target1).css(style) : '';
-  const isFilled = input =>
-    !!$(input)
-      .val()
-      .trim();
-  $(window).one('load', () => {
-    $('*[data-slidinput]').slidinput();
-  });
-  $.fn.slidinput = function(options) {
-    const defs = {
-      scaling: 0.7,
-      mode: 'centered',
-      offsetY: 0,
-      offsetX: 0,
-      focusAnimation: true
-    };
-    return this.each(function() {
-      if (options === 'destroy') {
-        if ($(this).hasClass('slidinput-inited')) {
-          let $placeholder = $(this)
-            .parent()
-            .children('.slidinput-placeholder');
+  const isFilled = (input) => !!$(input).val().trim();
+  const initialWindowWidth = $(window).width();
+  const inited = [];
+  $.fn.slidinput = function (settings) {
+    return this.each(function () {
+      if ($(this).hasClass('slidinput-inited')) {
+        if (settings === 'destroy') {
+          const initedIndex = inited.indexOf(this);
+          const controller = inited[initedIndex];
+          inited.splice(initedIndex, 1);
+          let $placeholder = $(this).parent().children('.slidinput-placeholder');
           $(this)
+            .off('focus blur input', this)
             .removeClass('slidinput-inited')
             .removeAttr('style')
             .unwrap()
             .attr('placeholder', $placeholder.text());
           $placeholder.remove();
+          controller && controller.onDestroy && controller.onDestroy(controller);
         }
         return;
-      } else if ($(this).hasClass('slidinput-inited')) return;
+      }
+      const input = this;
+      let isHidden = false;
+      $(this)
+        .parents()
+        .each(function () {
+          if ($(this).css('display') === 'none') {
+            isHidden = true;
+            const observer = new MutationObserver((mutations) =>
+              mutations.forEach((mutation) => {
+                if (mutation.target.style.display !== 'none') {
+                  $(input).slidinput(settings);
+                  observer.disconnect();
+                }
+              })
+            );
+            observer.observe(this, {attributes: true});
+            return true;
+          }
+        });
+      if (isHidden) return;
       let dataOptions = {};
-      for (let key in defs) {
+      for (let key in $.fn.slidinput.defaults) {
         if ($(this).attr('data-' + key)) dataOptions[key] = $(this).attr('data-' + key);
         if (!isNaN(dataOptions[key])) dataOptions[key] = Number(dataOptions[key]);
         switch (dataOptions[key]) {
@@ -51,17 +63,15 @@ import './main.scss';
             break;
         }
       }
-      options = $.extend(defs, dataOptions, options);
       let oh = $(this).outerHeight();
       let ow = $(this).outerWidth();
+      const options = $.extend({}, $.fn.slidinput.defaults, dataOptions, settings);
       $(this).wrap(
         $(document.createElement('label')).addClass(
           getClassesString(['slidinput', ...this.classList], '-wrapper')
         )
       );
-      const wrapper = $(this)
-        .parent()
-        .get()[0];
+      const wrapper = $(this).parent().get()[0];
       const placeholder = $(document.createElement('span'))
         .addClass('slidinput-placeholder')
         .text($(this).attr('placeholder'))
@@ -72,8 +82,10 @@ import './main.scss';
           marginLeft: compareStyle('marginLeft', this, wrapper),
           marginTop: compareStyle('marginTop', this, wrapper),
           marginRight: compareStyle('marginRight', this, wrapper),
-          marginBottom: compareStyle('marginBottom', this, wrapper)
+          marginBottom: compareStyle('marginBottom', this, wrapper),
         });
+      const controller = {input, wrapper, placeholder, options};
+      inited.push(controller);
       isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
       $(this)
         .addClass('slidinput-inited')
@@ -81,21 +93,25 @@ import './main.scss';
         .css({
           margin: 0,
           height: oh,
-          width: ow
+          width: ow,
         })
         .on('focus', () => {
           $(wrapper).addClass('focused');
-          isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
+          if (isFilled(this)) $(wrapper).addClass('filled');
+          else $(wrapper).removeClass('filled');
         })
         .on('blur', () => {
           $(wrapper).removeClass('focused');
-          isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
+          if (isFilled(this)) $(wrapper).addClass('filled');
+          else $(wrapper).removeClass('filled');
         })
         .on('input', () => {
-          isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
+          if (isFilled(this)) $(wrapper).addClass('filled');
+          else $(wrapper).removeClass('filled');
         });
       $(window).one('load', () => {
-        isFilled(this) ? $(wrapper).addClass('filled') : $(wrapper).removeClass('filled');
+        if (isFilled(this)) $(wrapper).addClass('filled');
+        else $(wrapper).removeClass('filled');
       });
       $(placeholder).css({
         color: compareStyle('color', this, placeholder),
@@ -104,7 +120,7 @@ import './main.scss';
         letterSpacing: compareStyle('letterSpacing', this, placeholder),
         fontWeight: compareStyle('fontWeight', this, placeholder),
         top: 0,
-        left: 0
+        left: 0,
       });
       let ph = $(placeholder).height();
       let placeholderTop = (oh - ph) / 2;
@@ -114,7 +130,7 @@ import './main.scss';
       );
       $(placeholder).css({
         top: placeholderTop,
-        left: placeholderLeft
+        left: placeholderLeft,
       });
       let {scaling, mode, offsetY, offsetX, focusAnimation} = options;
       placeholder.style.setProperty('--scaling', scaling);
@@ -137,7 +153,7 @@ import './main.scss';
           let newPaddingTop = oh - bt + bb - ph - newPaddingBottom;
           $(this).css({
             paddingTop: newPaddingTop,
-            paddingBottom: newPaddingBottom
+            paddingBottom: newPaddingBottom,
           });
           let newSliding = (newPaddingBottom + bt - placeholderTop) / scaling;
           placeholder.style.setProperty('--sliding-y', newSliding + 'px');
@@ -157,9 +173,7 @@ import './main.scss';
           }
           break;
         case 'regular':
-          $(wrapper)
-            .addClass('mode-regular')
-            .removeClass('focus-animation');
+          $(wrapper).addClass('mode-regular').removeClass('focus-animation');
           placeholder.style.setProperty('--scaling', 1);
           placeholder.style.setProperty('--opacity', 0);
           placeholder.style.setProperty('--sliding-y', offsetY + 'px');
@@ -173,6 +187,30 @@ import './main.scss';
           }
           break;
       }
+      options.onInit && options.onInit(controller);
     });
   };
+  $.fn.slidinput.defaults = {
+    scaling: 0.7,
+    mode: 'centered',
+    offsetY: 0,
+    offsetX: 0,
+    focusAnimation: true,
+    resizeUpdate: true,
+    onInit: false,
+    onDestroy: false,
+  };
+  $(window).one('load', () => {
+    $('*[data-slidinput]').slidinput();
+  });
+  $(window).on('resize', (e) => {
+    if ($(window).width() !== initialWindowWidth) {
+      inited
+        .filter((item) => item.options.resizeUpdate)
+        .forEach((item) => {
+          $(item.input).slidinput('destroy');
+          $(item.input).slidinput(item.options);
+        });
+    }
+  });
 })(jQuery);
